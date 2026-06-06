@@ -501,9 +501,28 @@ picture{display:contents}
 <p>Este é um produto digital. O resultado final pode variar de acordo com a tensão do ponto e materiais utilizados.</p>
 </footer>
 
-<script>const track=document.getElementById('carrosselTrack');if(track){const totalItems=14;const itemWidth=()=>track.children[0].offsetWidth+16;let pos=0,animId,speed=0.5,isDragging=false,dragStartX=0,dragStartPos=0;function loopCarrossel(){if(!isDragging){pos-=speed;const loopPoint=itemWidth()*totalItems;if(Math.abs(pos)>=loopPoint)pos=0;track.style.transform=`translateX(${pos}px)`;}
-animId=requestAnimationFrame(loopCarrossel);}
-track.addEventListener('mousedown',e=>{isDragging=true;dragStartX=e.clientX;dragStartPos=pos;cancelAnimationFrame(animId);});window.addEventListener('mousemove',e=>{if(!isDragging)return;pos=dragStartPos+(e.clientX-dragStartX);const loopPoint=itemWidth()*totalItems;if(pos>0)pos=-loopPoint+pos;if(Math.abs(pos)>=loopPoint)pos=0;track.style.transform=`translateX(${pos}px)`;});window.addEventListener('mouseup',()=>{if(isDragging){isDragging=false;loopCarrossel();}});loopCarrossel();}
+<script>const track=document.getElementById('carrosselTrack');
+if(track){
+const totalItems=14;
+const itemWidth=()=>track.children[0].offsetWidth+16;
+const baseSpeed=0.6;
+let pos=0,isDragging=false,startX=0,startPos=0,lastX=0,velocity=0,boost=0;
+function loopPoint(){return itemWidth()*totalItems;}
+function normalize(){const lp=loopPoint();if(lp>0){if(pos<=-lp)pos+=lp;if(pos>0)pos-=lp;}}
+function render(){track.style.transform=`translateX(${pos}px)`;}
+function tick(){if(!isDragging){boost*=0.92;if(Math.abs(boost)<0.01)boost=0;pos-=(baseSpeed+boost);normalize();render();}requestAnimationFrame(tick);}
+function dragStart(x){isDragging=true;startX=x;lastX=x;startPos=pos;velocity=0;}
+function dragMove(x){if(!isDragging)return;velocity=x-lastX;lastX=x;pos=startPos+(x-startX);normalize();render();}
+function dragEnd(){if(!isDragging)return;isDragging=false;boost=Math.max(-6,Math.min(6,-velocity*0.5));}
+track.addEventListener('mousedown',e=>{e.preventDefault();dragStart(e.clientX);});
+window.addEventListener('mousemove',e=>dragMove(e.clientX));
+window.addEventListener('mouseup',dragEnd);
+track.addEventListener('touchstart',e=>dragStart(e.touches[0].clientX),{passive:true});
+track.addEventListener('touchmove',e=>dragMove(e.touches[0].clientX),{passive:true});
+track.addEventListener('touchend',dragEnd);
+track.addEventListener('touchcancel',dragEnd);
+tick();
+}
 document.querySelectorAll('.faq-pergunta').forEach(p=>{p.addEventListener('click',()=>p.parentElement.classList.toggle('aberto'));});const timerEl=document.getElementById('timer-completo');if(timerEl){let segundos=10*60;setInterval(()=>{if(segundos<=0){timerEl.textContent='00:00';return;}
 segundos--;timerEl.textContent=String(Math.floor(segundos/60)).padStart(2,'0')+':'+String(segundos%60).padStart(2,'0');},1000);}
 function abrirPopup(){const popup=document.getElementById('popup-upgrade');if(!popup)return;popup.classList.add('ativo');let sec=5*60;const timerEl=document.getElementById('popup-timer');const tick=setInterval(()=>{if(sec<=0){clearInterval(tick);if(timerEl)timerEl.textContent='00:00';return;}
