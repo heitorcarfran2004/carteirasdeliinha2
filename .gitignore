@@ -1,0 +1,9 @@
+# Claude Code local config
+.claude/
+
+# Dependencies
+node_modules/
+
+# OS files
+Thumbs.db
+.DS_Store
