@@ -209,25 +209,74 @@
 
 <section class="secao-por-dentro" id="por-dentro">
 <style>
-.secao-por-dentro{background:#f7f4f2;padding:56px 20px;text-align:center}
-.secao-por-dentro h2{font-family:'Playfair Display',serif;font-size:30px;margin-bottom:8px}
-.secao-por-dentro>p{color:#555;margin-bottom:32px}
-.pd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:0 auto}
-.pd-item{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sombra)}
-.pd-item img{width:100%;height:auto;display:block}
-.pd-legenda{font-size:13px;color:var(--cinza-texto);padding:10px 12px;line-height:1.4}
-.pd-legenda strong{display:block;color:var(--preto);font-size:14px}
-@media(max-width:700px){.pd-grid{grid-template-columns:1fr;max-width:380px}.secao-por-dentro h2{font-size:26px}}
+.secao-por-dentro{background:var(--creme);padding:64px 20px;text-align:center}
+.secao-por-dentro h2{font-family:'Playfair Display',serif;font-size:32px;line-height:1.25;margin:16px 0 12px}
+.secao-por-dentro h2 em{color:var(--vermelho)}
+.secao-por-dentro>.pd-sub{color:#555;max-width:620px;margin:0 auto;font-size:16px}
+.etapas{display:grid;gap:clamp(16px,2.2vw,22px);max-width:940px;margin:40px auto 0;text-align:left}
+.etapa{display:grid;grid-template-columns:clamp(128px,34%,320px) 1fr;column-gap:clamp(16px,3.4vw,40px);grid-template-areas:"img topo" "img corpo";grid-template-rows:1fr 1fr;align-items:center;background:#fff;border:1px solid #f0e4e7;border-radius:20px;padding:clamp(14px,2.4vw,24px);box-shadow:0 10px 28px rgba(122,31,61,.07)}
+.etapa-topo{grid-area:topo;align-self:end}
+.etapa-corpo{grid-area:corpo;align-self:start}
+.etapa-img{grid-area:img;position:relative;display:block;width:100%;padding:0;border:none;background:#fff;border-radius:10px;overflow:hidden;cursor:zoom-in;line-height:0;box-shadow:0 12px 28px rgba(122,31,61,.18);transition:transform .18s,box-shadow .18s}
+.etapa-img:hover{transform:translateY(-3px) rotate(-.6deg);box-shadow:0 18px 36px rgba(122,31,61,.24)}
+.etapa-img img{width:100%;height:auto;display:block}
+.lupa{position:absolute;right:8px;bottom:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);color:var(--vermelho);font-size:16px;line-height:30px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.14)}
+.etapa-num{display:inline-block;background:var(--vermelho);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:6px 12px;border-radius:100px}
+.etapa h3{font-family:'Playfair Display',serif;font-size:clamp(21px,2.6vw,27px);color:var(--preto);margin:12px 0 8px;line-height:1.2}
+.etapa p{font-size:clamp(15px,1.7vw,17px);color:#4a3a40;line-height:1.55}
+.etapa-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;padding:0}
+.etapa-tags li{list-style:none;background:var(--creme);border:1px solid #f0e4e7;color:var(--vermelho-escuro);font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:100px}
+.zoom[hidden]{display:none}
+.zoom{position:fixed;inset:0;z-index:10000;background:rgba(40,12,24,.9);overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:56px 12px 24px;cursor:zoom-out}
+.zoom img{width:min(100%,900px);height:auto;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.zoom-x{position:fixed;top:10px;right:12px;width:42px;height:42px;border-radius:50%;border:none;background:#fff;color:var(--preto);font-size:28px;line-height:1;cursor:pointer;font-family:inherit}
+@media(max-width:760px){.secao-por-dentro h2{font-size:27px}.etapa{grid-template-columns:1fr;grid-template-areas:"topo" "img" "corpo";grid-template-rows:auto;row-gap:14px;text-align:center;padding:20px 16px 22px}.etapa-corpo,.etapa-topo{align-self:auto}.etapa-img{width:min(85%,325px);margin:0 auto}.etapa h3{margin:10px 0 0}.etapa-tags{justify-content:center}}
+@media(max-width:600px){.etapa{border-radius:16px}.etapa h3{font-size:22px}.etapa p{font-size:15px;line-height:1.5}.etapa-tags li{font-size:12px;padding:5px 10px}}
 </style>
-<span class="bonus-tag">📖 POR DENTRO DA APOSTILA</span>
-<h2>Veja como é <span style="color:var(--vermelho)">cada modelo</span></h2>
-<p>2 páginas por carteira: a ficha com a receita e o passo a passo com fotos.</p>
-<div class="pd-grid">
-<div class="pd-item"><picture><source type="image/webp" srcset="images/apostila-capa.webp"><img loading="lazy" width="720" height="1018" src="images/apostila-capa.jpg" alt="Capa da apostila 30 Modelos de Carteiras em Crochê"></picture><div class="pd-legenda"><strong>A apostila</strong>61 páginas, 30 modelos em 4 coleções</div></div>
-<div class="pd-item"><picture><source type="image/webp" srcset="images/apostila-pag1.webp"><img loading="lazy" width="720" height="1018" src="images/apostila-pag1.jpg" alt="Página 1 de um modelo: ficha com receita"></picture><div class="pd-legenda"><strong>Página 1: a ficha</strong>Materiais, gráfico, receita carreira por carreira e tamanhos</div></div>
-<div class="pd-item"><picture><source type="image/webp" srcset="images/apostila-pag2.webp"><img loading="lazy" width="720" height="1018" src="images/apostila-pag2.jpg" alt="Página 2 de um modelo: passo a passo com fotos"></picture><div class="pd-legenda"><strong>Página 2: o passo a passo</strong>8 etapas com fotos, erros comuns e dicas de ouro</div></div>
+<span class="bonus-tag">O QUE VOCÊ RECEBE</span>
+<h2>30 carteiras com receita completa,<br><em>pra fazer igualzinho à foto</em></h2>
+<p class="pd-sub">Nada de foto solta sem explicação. Cada modelo vem em 2 páginas: a ficha com tudo o que você precisa e o passo a passo fotografado, do primeiro ponto ao fecho.</p>
+<div class="etapas">
+<article class="etapa">
+<div class="etapa-topo">
+<span class="etapa-num">Página 1</span>
+<h3>A ficha do modelo</h3>
 </div>
-<button class="btn-principal" style="margin-top:32px;max-width:420px" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">QUERO MINHA APOSTILA</button>
+<button class="etapa-img" type="button" data-full="images/receita-p1-full.webp" aria-label="Ampliar a página 1: ficha do modelo">
+<picture><source type="image/webp" srcset="images/receita-p1-sm.webp 440w, images/receita-p1.webp 760w" sizes="(max-width:760px) 75vw, 320px"><img src="images/receita-p1.jpg" alt="Página 1 do Modelo 10 Matelassê Céu: ficha com nível, tempo, materiais, gráfico, receita carreira por carreira e tabela de tamanhos" width="760" height="1074" loading="lazy" decoding="async"></picture>
+<span class="lupa" aria-hidden="true">⤢</span>
+</button>
+<div class="etapa-corpo">
+<p>Você vê a carteira pronta e já sabe tudo o que comprar, com a receita carreira por carreira.</p>
+<ul class="etapa-tags"><li>Medidas e nível</li><li>Fio e materiais</li><li>Gráfico</li><li>Receita completa</li><li>Tabela de tamanhos</li></ul>
+</div>
+</article>
+<article class="etapa">
+<div class="etapa-topo">
+<span class="etapa-num">Página 2</span>
+<h3>O passo a passo com fotos</h3>
+</div>
+<button class="etapa-img" type="button" data-full="images/receita-p2-full.webp" aria-label="Ampliar a página 2: passo a passo com fotos">
+<picture><source type="image/webp" srcset="images/receita-p2-sm.webp 440w, images/receita-p2.webp 760w" sizes="(max-width:760px) 75vw, 320px"><img src="images/receita-p2.jpg" alt="Página 2 do Modelo 10 Matelassê Céu: 8 etapas fotografadas, erros comuns e dicas de ouro" width="760" height="1074" loading="lazy" decoding="async"></picture>
+<span class="lupa" aria-hidden="true">⤢</span>
+</button>
+<div class="etapa-corpo">
+<p>8 etapas fotografadas e numeradas, do primeiro ponto ao fecho, mais os erros comuns e como evitar.</p>
+<ul class="etapa-tags"><li>Corpo</li><li>Aba</li><li>Laterais</li><li>Montagem</li><li>Fecho e acabamento</li></ul>
+</div>
+</article>
+</div>
+<button class="btn-principal" style="margin-top:36px;max-width:420px" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">QUERO MINHA APOSTILA</button>
+<div class="zoom" id="zoom" hidden>
+<button class="zoom-x" type="button" aria-label="Fechar">×</button>
+<img alt="">
+</div>
+<script>
+(function(){var z=document.getElementById('zoom');if(!z)return;var im=z.querySelector('img'),ult=null;
+document.querySelectorAll('.etapa-img').forEach(function(b){b.addEventListener('click',function(){ult=b;im.src=b.getAttribute('data-full');im.alt=b.querySelector('img').alt;z.hidden=false;z.scrollTop=0;document.body.style.overflow='hidden';z.querySelector('.zoom-x').focus();});});
+function fechar(){z.hidden=true;document.body.style.overflow='';if(ult)ult.focus();}
+z.addEventListener('click',fechar);document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!z.hidden)fechar();});})();
+</script>
 </section>
 
 <section class="secao-materiais">
