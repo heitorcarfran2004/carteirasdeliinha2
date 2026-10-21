@@ -1,15 +1,33 @@
 {
+  "redirects": [
+    {
+      "source": "/dowsell",
+      "destination": "/downsell",
+      "permanent": false
+    },
+    {
+      "source": "/dowsell/",
+      "destination": "/downsell",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/images/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(.*)\\.(webp|png|jpg|jpeg|gif|svg|ico|woff2)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ]

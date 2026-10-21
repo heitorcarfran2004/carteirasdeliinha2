@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E8194B">
+<meta name="robots" content="noindex,nofollow">
+<title>Oferta única · Crochê com Amor</title>
+
+<!-- ══════════ VSL (VTurb / ConverteAI) ══════════
+     Bloco que o painel do VTurb manda pôr no começo do <head>: marca o início do
+     carregamento (_plt) e pede o player, a lib e o primeiro pedaço do vídeo antes do
+     resto da página. Mesmo esquema do upsell da Miçanga (micangasdajuh.vercel.app/upsell). -->
+<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+<link rel="preload" href="https://scripts.converteai.net/59fb2471-bbf9-48ae-ad59-009b3aba8bd1/players/6ad89fbe5b97ed1e8f51d25b/v4/player.js" as="script">
+<link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+<link rel="preload" href="https://cdn.converteai.net/59fb2471-bbf9-48ae-ad59-009b3aba8bd1/6ad89fb6e68b4818c6c84786/main.m3u8" as="fetch">
+<link rel="dns-prefetch" href="https://cdn.converteai.net">
+<link rel="dns-prefetch" href="https://scripts.converteai.net">
+<link rel="dns-prefetch" href="https://images.converteai.net">
+<link rel="dns-prefetch" href="https://license.vturb.com">
+
+<!-- ══════════ OFERTA DA WIAPY — TROCAR AQUI ══════════
+     O único ponto a mexer quando a oferta de upsell existir na Wiapy.
+     ACEITE  = TROCAR pelo link do checkout do upsell (R$ 19,90), no formato
+               https://pay.wiapy.com/checkout/<id>  (igual ao da Miçanga).
+               O script que a Wiapy gerou veio com ".../checkout/undefined": a oferta ainda
+               não está ligada a um checkout. Enquanto isto tiver TROCAR (ou undefined), o
+               botão NÃO abre URL nenhuma: mostra um aviso. O SDK sempre navega para este
+               link (com o wiapy_sell junto), então sem ele nem o 1 clique funciona.
+     RECUSA  = próxima etapa do funil: o downsell deste mesmo site.
+     ESPERA  = segundos de VSL antes de mostrar preço e botão (a VSL tem 1:38 e a
+               lista da oferta entra perto de 1:24). -->
+<script>
+window.FUNIL = {
+  ACEITE: "https://pay.wiapy.com/checkout/TROCAR-ID-OFERTA-UPSELL",
+  RECUSA: "/downsell/",
+  ESPERA: 85
+};
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'"
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+
+<!-- SDK da Wiapy, exatamente como o painel manda ("Gerenciar UPSELL/DOWNSELL → Script"):
+     define initWiapyUpsell(), que desenha o botão de 1 clique e o de recusa.
+     (wiapy.com/js/upsell.js NÃO existe.) Mesmo assim o código lá embaixo espera a função
+     existir e tem reserva aos 5 s, caso o script não carregue. -->
+<script src="https://wiapy.com/sell/1.0.0/sell.min.js"></script>
+
+<!-- UTMify: a venda do upsell cai no mesmo painel da página de vendas -->
+<script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck data-utmify-prevent-subids async defer></script>
+
+<style>
+:root{
+  --rosa:#E8194B; --rosa-esc:#C01040; --rosa-fundo:#fff4f6; --rosa-linha:#f6d0da;
+  --tinta:#111111; --tinta-2:#4a4a4a; --cinza:#6b6b6b;
+  --branco:#fff; --papel:#FAF7F4; --linha:#ebe5df;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font-family:var(--sans); -webkit-font-smoothing:antialiased;
+}
+img{display:block; max-width:100%}
+.env{width:100%; max-width:460px; margin:0 auto; padding:0 16px}
+
+/* ══════════ contador ══════════
+   Cronômetro de verdade, com o fim gravado na sessão: recarregar não devolve os 7 minutos. */
+.faixa-tempo{
+  background:linear-gradient(135deg,var(--rosa),var(--rosa-esc));
+  color:#fff; position:relative; z-index:30;
+  box-shadow:0 2px 14px rgba(192,16,64,.28);
+}
+.faixa-tempo .env{display:flex; align-items:center; justify-content:center; gap:11px; padding:11px 12px}
+.faixa-tempo b{font-weight:700; font-size:14.5px; letter-spacing:.6px}
+.relogio{display:flex; align-items:center; gap:4px}
+.digito{
+  background:rgba(0,0,0,.22); border-radius:8px;
+  min-width:30px; padding:5px 3px; text-align:center;
+  font-size:20px; font-weight:700; line-height:1;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.doispontos{font-size:19px; font-weight:700; opacity:.85; animation:pisca 1s steps(1) infinite}
+@keyframes pisca{50%{opacity:.2}}
+.faixa-tempo.acabou{background:#55505a; box-shadow:none}
+
+/* ══════════ topo: promessa e vídeo ══════════ */
+.topo{width:100%; max-width:460px; margin:0 auto; padding:24px 16px 0; text-align:center}
+.topo h1{
+  font-family:var(--serif); font-weight:700; font-size:29px; line-height:1.18;
+  letter-spacing:-.4px; margin:0; padding-top:6px; text-wrap:balance;
+}
+.topo h1 em{font-style:italic; font-weight:400; color:var(--rosa)}
+/* a subheadline é instrução, não promessa: sem peso e em cinza */
+.topo p{margin:9px auto 0; max-width:360px; font-size:18px; line-height:1.4; color:var(--cinza)}
+/* quem manda na largura do vídeo é este contêiner: o player do VTurb reescreve o
+   style do próprio elemento */
+.palco-vsl{
+  width:78%; max-width:400px; margin:18px auto 0;
+  border-radius:16px; overflow:hidden; line-height:0;
+  box-shadow:0 10px 28px rgba(40,10,20,.16);
+}
+
+/* ══════════ o que aparece depois do tempo de vídeo ══════════
+   display:none (e não opacity) para não abrir um vão embaixo do vídeo. O instante de
+   liberar fica na sessão: quem recarrega não espera tudo de novo. */
+.depois{display:none}
+.depois.on{display:block; animation:entra .45s ease}
+@keyframes entra{from{opacity:0; transform:translateY(10px)}}
+
+/* ══════════ card: o que leva, preço e botão ══════════ */
+.oferta{
+  background:var(--branco); border:1px solid var(--linha); border-radius:14px;
+  padding:22px 16px 18px; margin:26px 0 0; text-align:center;
+  box-shadow:0 6px 20px rgba(40,10,20,.07);
+}
+.lista{
+  display:flex; flex-direction:column; gap:12px; text-align:left;
+  margin:0 0 18px; padding:0 0 16px; border-bottom:1px solid var(--linha);
+}
+.item{display:flex; align-items:flex-start; gap:11px}
+.item .ck{
+  flex:0 0 22px; width:22px; height:22px; margin-top:1px; border-radius:50%;
+  background:rgba(232,25,75,.12); color:var(--rosa);
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.item .ck svg{width:13px; height:13px}
+.item.presente .ck{background:#e7f6ee; color:#1A9B5F}
+.item p{margin:0; font-size:14.5px; line-height:1.5; color:var(--tinta-2)}
+.item strong{font-weight:700; color:var(--tinta)}
+.oferta__titulo{font-family:var(--serif); font-weight:700; font-size:22px; line-height:1.2; margin:0 0 10px}
+.oferta .de{font-size:14px; color:var(--cinza)}
+.oferta .de s{text-decoration:line-through}
+.oferta .por{display:flex; align-items:baseline; justify-content:center; gap:8px; margin-top:5px}
+.oferta .por b{font-family:var(--sans); font-weight:700; font-size:42px; line-height:1; letter-spacing:-1.4px; color:var(--rosa)}
+.oferta .parcela{margin-top:7px; font-size:13px; color:var(--cinza)}
+.cta{
+  display:flex; align-items:center; justify-content:center; gap:9px;
+  width:100%; margin-top:15px;
+  color:#fff; font-family:var(--sans); font-size:16.5px; font-weight:700;
+  letter-spacing:.2px; text-decoration:none; text-align:center;
+  padding:17px 18px; border:0; border-radius:10px; cursor:pointer;
+}
+.cta:active{transform:translateY(1px)}
+/* o gateway pinta o botão de verde: verde de "aceitar" é convenção de checkout */
+.cta-verde{background:#00d769; box-shadow:0 8px 22px -5px rgba(0,180,90,.5)}
+.cta-verde:hover{background:#00b85a}
+#wiapy_upsell{margin-top:15px}
+#wiapy_upsell a{display:block}
+.selo-seguro{display:flex; align-items:center; justify-content:center; gap:6px; margin-top:11px; font-size:12px; color:var(--cinza)}
+.selo-seguro svg{width:13px; height:13px}
+.recusar{
+  display:block; width:100%; margin:14px 0 0; padding:10px;
+  font-size:13.5px; color:#000; text-align:center;
+  text-decoration:underline; text-underline-offset:3px;
+}
+
+/* ══════════ garantia ══════════ */
+.garantia{
+  background:linear-gradient(180deg,#fffdfd,var(--rosa-fundo));
+  border:1px solid var(--rosa-linha); border-radius:12px;
+  padding:14px; margin:24px 0 0;
+}
+.garantia-topo{display:flex; align-items:center; flex-wrap:wrap; justify-content:center; gap:13px}
+.garantia-topo img{flex:0 0 72px; width:72px; height:72px; object-fit:contain}
+.garantia-txt{flex:1 1 190px; min-width:0}
+.garantia-txt b{display:block; font-size:17px; font-weight:700; color:var(--tinta); line-height:1.3; margin-bottom:4px}
+.garantia-txt p{margin:0; font-size:13px; line-height:1.45; color:var(--tinta-2)}
+.garantia-txt strong{color:var(--tinta)}
+.garantia-pe{
+  margin-top:11px; padding-top:10px; border-top:1px solid var(--rosa-linha);
+  text-align:center; font-size:12.5px; color:var(--rosa-esc); font-weight:600; line-height:1.4;
+}
+.rodape{text-align:center; padding:26px 16px calc(20px + env(safe-area-inset-bottom)); font-size:11.5px; line-height:1.6; color:#9a948e}
+
+.aviso-oferta{margin:12px 0 0; padding:10px 12px; border-radius:10px; background:#fff6e5; border:1px solid #f3d9a4; color:#7a5200; font-size:13px; line-height:1.45}
+.aviso-oferta[hidden]{display:none}
+
+@media (max-width:400px){
+  .topo h1{font-size:25px}
+  .topo p{font-size:17px}
+  .oferta .por b{font-size:37px}
+  .faixa-tempo b{font-size:13px}
+  .digito{min-width:27px; font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  .doispontos{animation:none}
+  .depois.on{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═════════ contador ═════════ -->
+<div class="faixa-tempo" id="faixa-tempo">
+  <div class="env">
+    <b id="rotulo-tempo">OFERTA EXPIRA EM</b>
+    <div class="relogio">
+      <span class="digito" id="d1">0</span><span class="digito" id="d2">7</span>
+      <span class="doispontos">:</span>
+      <span class="digito" id="d3">0</span><span class="digito" id="d4">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ promessa + VSL ═════════ -->
+<header class="topo">
+  <h1>Sua apostila já <em>será enviada!</em></h1>
+  <p>Mas antes assista esse vídeo<br>para continuar seu acesso</p>
+</header>
+
+<div class="palco-vsl">
+  <vturb-smartplayer id="vid-6ad89fbe5b97ed1e8f51d25b" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/59fb2471-bbf9-48ae-ad59-009b3aba8bd1/players/6ad89fbe5b97ed1e8f51d25b/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+</div>
+
+<!-- ═════════ oferta e garantia — só depois de FUNIL.ESPERA segundos ═════════ -->
+<div class="env depois" id="depois">
+
+  <div class="oferta" id="btn-sim">
+    <div class="lista">
+      <div class="item">
+        <span class="ck"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <p><strong>30 videoaulas</strong>, uma para cada carteira da sua apostila.</p>
+      </div>
+      <div class="item">
+        <span class="ck"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <p><strong>+10 modelos exclusivos</strong>, que não estão na apostila, cada um com a sua aula.</p>
+      </div>
+      <div class="item">
+        <span class="ck"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <p><strong>Você vê onde a agulha entra</strong> e com quanta força puxa. Travou? Volta 10 segundos.</p>
+      </div>
+      <div class="item presente">
+        <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span>
+        <p><strong>De presente: 15 videoaulas de bolsas</strong> de crochê.</p>
+      </div>
+      <div class="item">
+        <span class="ck"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <p><strong>Acesso vitalício no aplicativo</strong>, junto com a sua apostila.</p>
+      </div>
+    </div>
+
+    <h2 class="oferta__titulo">Tudo por apenas</h2>
+    <div class="de">De <s>R$ 79,90</s></div>
+    <div class="por"><b>R$ 19,90</b></div>
+    <div class="parcela">pagamento único, no Pix ou no cartão</div>
+
+    <!-- a Wiapy desenha aqui o botão de aceite e o link de recusa -->
+    <div id="wiapy_upsell"></div>
+    <p class="aviso-oferta" id="aviso-oferta" hidden>Esta oferta está sendo liberada agora. Tente de novo em alguns instantes.</p>
+
+    <div class="selo-seguro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+      Compra segura · acesso imediato
+    </div>
+  </div>
+
+  <div class="garantia">
+    <div class="garantia-topo">
+      <img src="/images/ups/garantia.webp" alt="Garantia de 7 dias" width="72" height="72" loading="lazy">
+      <div class="garantia-txt">
+        <b>Garantia de 7 dias</b>
+        <p>Assista às aulas por 7 dias. Se não for pra você, devolvemos <strong>100% do seu dinheiro</strong>, sem perguntas.</p>
+      </div>
+    </div>
+    <div class="garantia-pe">O risco é todo nosso. Você não tem nada a perder.</div>
+  </div>
+
+  <p class="rodape">
+    Esta oferta aparece uma única vez, agora.<br>
+    © 2026 Crochê com Amor · todos os direitos reservados
+  </p>
+</div>
+
+<!-- ══════════ trava do link que falta ══════════
+     Enquanto FUNIL.ACEITE não for um link real de checkout (tem TROCAR ou "undefined"),
+     o clique no botão de aceite é barrado aqui, na fase de captura, antes do onclick do
+     SDK: em vez de abrir uma URL quebrada, aparece o aviso. Some sozinho quando o link
+     certo entrar na constante. -->
+<script>
+(function () {
+  var F = window.FUNIL;
+  F.PRONTO = F.ACEITE.indexOf('https://pay.wiapy.com/checkout/') === 0 && !/TROCAR|undefined/i.test(F.ACEITE);
+  if (F.PRONTO) return;
+  console.warn('[funil] FUNIL.ACEITE ainda sem link de checkout:', F.ACEITE);
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest && e.target.closest('#wiapy_upsell button, #wiapy_upsell a.cta, #modal-sim');
+    if (!el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var m = document.getElementById('modal-certeza');
+    if (m && !m.hidden) { m.hidden = true; document.body.style.overflow = ''; }
+    var av = document.getElementById('aviso-oferta');
+    av.hidden = false;
+    av.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, true);
+})();
+</script>
+
+<!-- ══════════ botão do gateway ══════════
+     O SDK desenha o botão de 1 clique: lê o `wiapy_sell` que a Wiapy põe na URL ao mandar
+     a compradora para cá e cobra no mesmo cartão. O próprio SDK acrescenta o wiapy_sell no
+     link de recusa, então o downsell também recebe e também cobra em 1 clique.
+     Como o script é async, ele ainda não existe quando este trecho roda: daí a espera
+     (150 ms em 150 ms, e a reserva aos 5 s). A reserva leva a URL inteira adiante. -->
+<script>
+(function () {
+  var F = window.FUNIL;
+  var caixa = document.getElementById('wiapy_upsell');
+
+  function comBusca(url) {
+    var q = location.search.replace(/^\?/, '');
+    if (!q) return url;
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + q;
+  }
+
+  function desenhar() {
+    if (typeof initWiapyUpsell !== 'function') return false;
+    initWiapyUpsell({
+      linkUrl: F.ACEITE,
+      linkText: "SIM, EU QUERO AS VIDEOAULAS",
+      styles: {
+        backgroundColor: "#00d769",
+        hoverBackgroundColor: "#00b85a",
+        fontSize: "17px",
+        borderRadius: "10px"
+      },
+      refusalLinkUrl: new URL(F.RECUSA, location.href).href,
+      refusalLinkText: "Não, obrigada. Quero continuar sem as aulas",
+      refusalLinkColor: "#000000"
+    });
+    return true;
+  }
+
+  // reserva: o mesmo par de links à mão, para a página nunca ficar sem saída
+  function reserva() {
+    if (caixa.children.length) return;
+    caixa.innerHTML =
+      '<a class="cta cta-verde" href="' + comBusca(F.ACEITE) + '">SIM, EU QUERO AS VIDEOAULAS</a>' +
+      '<a class="recusar" href="' + comBusca(F.RECUSA) + '">Não, obrigada. Quero continuar sem as aulas</a>';
+  }
+
+  if (!desenhar()) {
+    var tentativa = setInterval(function () { if (desenhar()) clearInterval(tentativa); }, 150);
+    setTimeout(function () { clearInterval(tentativa); reserva(); }, 5000);
+  }
+})();
+</script>
+
+<script>
+/* CONTADOR — 7 minutos, gravados por sessão (contador que renasce cheio denuncia a contagem falsa) */
+(function () {
+  var MIN = 7, fim;
+  try {
+    fim = parseInt(sessionStorage.getItem('cart-upsell-fim') || '0', 10);
+    if (!fim || fim < Date.now()) {
+      fim = Date.now() + MIN * 60000;
+      sessionStorage.setItem('cart-upsell-fim', String(fim));
+    }
+  } catch (e) { fim = Date.now() + MIN * 60000; }
+  var d = ['d1', 'd2', 'd3', 'd4'].map(function (x) { return document.getElementById(x); });
+  function tique() {
+    var s = Math.max(0, Math.round((fim - Date.now()) / 1000));
+    var t = String(Math.floor(s / 60)).padStart(2, '0') + String(s % 60).padStart(2, '0');
+    for (var i = 0; i < 4; i++) if (d[i].textContent !== t[i]) d[i].textContent = t[i];
+    if (s <= 0) {
+      clearInterval(id);
+      document.getElementById('faixa-tempo').classList.add('acabou');
+      document.getElementById('rotulo-tempo').textContent = 'OFERTA ENCERRADA';
+    }
+  }
+  tique();
+  var id = setInterval(tique, 1000);
+})();
+
+/* ATRASO — preço e botão entram só quando a VSL chega na oferta. O instante de liberar
+   fica na sessão: quem recarrega no 1:20 espera só o que falta. ?ver=1 libera na hora
+   (para conferir a página sem esperar o vídeo). */
+(function () {
+  var ESPERA = (window.FUNIL.ESPERA || 85) * 1000;
+  var bloco = document.getElementById('depois');
+  if (/[?&]ver=1/.test(location.search)) { bloco.classList.add('on'); return; }
+  var liberaEm;
+  try {
+    liberaEm = parseInt(sessionStorage.getItem('cart-upsell-libera') || '0', 10);
+    if (!liberaEm) {
+      liberaEm = Date.now() + ESPERA;
+      sessionStorage.setItem('cart-upsell-libera', String(liberaEm));
+    }
+  } catch (e) { liberaEm = Date.now() + ESPERA; }
+  setTimeout(function () { bloco.classList.add('on'); }, Math.max(0, liberaEm - Date.now()));
+})();
+</script>
+
+</body>
+</html>
